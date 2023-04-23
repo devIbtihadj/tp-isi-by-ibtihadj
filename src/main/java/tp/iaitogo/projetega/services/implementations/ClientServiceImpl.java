@@ -11,6 +11,7 @@ import tp.iaitogo.projetega.exceptions.ClientNotFoundException;
 import tp.iaitogo.projetega.repositories.ClientRepository;
 import tp.iaitogo.projetega.services.ClientService;
 
+import java.util.HashMap;
 import java.util.Optional;
 
 @Service
@@ -43,6 +44,7 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public void supprimerClient(Long id) {
         Optional<Client> optionalClient = clientRepository.findById(id);
+        System.out.println(optionalClient.get().getId());
         if(optionalClient.isEmpty()){
             throw new ClientNotFoundException("Aucun client n'existe avec l'id "+id);
         }else {
@@ -61,7 +63,13 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public Page<Client> tousLesClients(int page, int size) {
-        return clientRepository.findAll(PageRequest.of(page - 1, size, Sort.by("id").descending()));
+    public HashMap<String, Object> tousLesClients(int page, int size) {
+        Page<Client> pageClients = clientRepository.findAll(PageRequest.of(page - 1, size, Sort.by("id").descending()));
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("currentPage", page);
+        hashMap.put("totalPages", pageClients.getTotalPages());
+        hashMap.put("totalElements", pageClients.getTotalElements());
+        hashMap.put("clients", pageClients.getContent());
+        return hashMap;
     }
 }

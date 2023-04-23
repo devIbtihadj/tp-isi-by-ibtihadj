@@ -10,6 +10,8 @@ import tp.iaitogo.projetega.request.AddOrModifClientRequest;
 import tp.iaitogo.projetega.services.ClientService;
 import tp.iaitogo.projetega.utils.JavaConverter;
 
+import java.util.HashMap;
+
 import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -46,15 +48,15 @@ public class ClientController extends MyCustomExceptionsHandler {
         return ResponseEntity.status(OK).body(response);
     }
 
-    @DeleteMapping(value = ENTITY_PATH+"/delete/{id}", consumes = {APPLICATION_JSON_VALUE}, produces = {APPLICATION_JSON_VALUE})
-    public ResponseEntity<?> supprimerClient(@PathVariable("id") Long id) {
+    @DeleteMapping(value = ENTITY_PATH+"/delete/{id}")
+    public ResponseEntity<String> supprimerClient(@PathVariable("id") Long id) {
         clientService.supprimerClient(id);
         return ResponseEntity.status(NO_CONTENT).body("Client supprimé avec succès");
     }
 
     @GetMapping(value = ENTITY_PATH+"/get/all/page/{page}/size/{size}", produces = {APPLICATION_JSON_VALUE})
-    public ResponseEntity<Page<Client>> allClient(@PathVariable("page") int page, @PathVariable("size") int size) {
-        Page<Client> all = clientService.tousLesClients(page, size);
+    public ResponseEntity<HashMap<String, Object>> allClient(@PathVariable("page") int page, @PathVariable("size") int size) {
+        HashMap<String, Object> all = clientService.tousLesClients(page, size);
         return ResponseEntity.status(OK).body(all);
     }
 

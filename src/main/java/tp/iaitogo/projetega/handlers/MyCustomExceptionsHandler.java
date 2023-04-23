@@ -11,6 +11,7 @@ import tp.iaitogo.projetega.exceptions.ClientNotFoundException;
 import tp.iaitogo.projetega.exceptions.CompteNotFoundException;
 import tp.iaitogo.projetega.exceptions.SoldeInsuffissantException;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,6 +41,11 @@ public class MyCustomExceptionsHandler {
         return ResponseEntity.status(BAD_REQUEST).body(exception.getMessage());
     }
 
+    @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
+    public ResponseEntity<String> violationDeContrainteDIntegriteSql(SQLIntegrityConstraintViolationException exception) {
+        LOGGER.error(exception.getMessage());
+        return ResponseEntity.status(500).body("Impossible de supprimer ce client car il possède un compte");
+    }
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<?> ConstraintViolationException(ConstraintViolationException exception) {
         LOGGER.error(exception.getMessage());

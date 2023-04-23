@@ -12,6 +12,8 @@ import tp.iaitogo.projetega.request.VirementRequest;
 import tp.iaitogo.projetega.services.CompteService;
 import tp.iaitogo.projetega.utils.JavaConverter;
 
+import java.util.HashMap;
+
 import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -48,15 +50,15 @@ public class CompteController extends MyCustomExceptionsHandler {
         return ResponseEntity.status(OK).body(response);
     }
 
-    @DeleteMapping(value = ENTITY_PATH+"/delete/{id}", consumes = {APPLICATION_JSON_VALUE}, produces = {APPLICATION_JSON_VALUE})
-    public ResponseEntity<?> supprimerCompte(@PathVariable("id") Long id) {
+    @DeleteMapping(value = ENTITY_PATH+"/delete/{id}")
+    public ResponseEntity<String> supprimerCompte(@PathVariable("id") Long id) {
         compteService.supprimerCompte(id);
         return ResponseEntity.status(NO_CONTENT).body("Compte supprimé avec succès");
     }
 
     @GetMapping(value = ENTITY_PATH+"/get/all/page/{page}/size/{size}", produces = {APPLICATION_JSON_VALUE})
-    public ResponseEntity<Page<Compte>> allCompte(@PathVariable("page") int page, @PathVariable("size") int size) {
-        Page<Compte> all = compteService.tousLesComptes(page, size);
+    public ResponseEntity<HashMap<String, Object>> allCompte(@PathVariable("page") int page, @PathVariable("size") int size) {
+        HashMap<String, Object> all = compteService.tousLesComptes(page, size);
         return ResponseEntity.status(OK).body(all);
     }
 

@@ -15,6 +15,7 @@ import tp.iaitogo.projetega.utils.FunctionsUtils;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Optional;
 
 
@@ -69,8 +70,14 @@ public class CompteServiceImpl implements CompteService {
     }
 
     @Override
-    public Page<Compte> tousLesComptes(int page, int size) {
-        return compteRepository.findAll(PageRequest.of(page - 1, size, Sort.by("id").descending()));
+    public HashMap<String, Object> tousLesComptes(int page, int size) {
+        Page<Compte> pageCompte =  compteRepository.findAll(PageRequest.of(page - 1, size, Sort.by("id").descending()));
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("currentPage", page);
+        hashMap.put("totalPages", pageCompte.getTotalPages());
+        hashMap.put("totalElements", pageCompte.getTotalElements());
+        hashMap.put("comptes", pageCompte.getContent());
+        return hashMap;
     }
 
     @Override

@@ -3,6 +3,7 @@ package tp.iaitogo.projetega.services;
 import org.springframework.data.domain.Page;
 import tp.iaitogo.projetega.entities.Compte;
 
+import java.util.HashMap;
 
 
 public interface CompteService {
@@ -15,7 +16,7 @@ public interface CompteService {
 
     Compte getCompte(Long id);
 
-    Page<Compte> tousLesComptes(int page, int size);
+    HashMap<String, Object> tousLesComptes(int page, int size);
 
     Compte versement(String numCompte, long montant);
 
