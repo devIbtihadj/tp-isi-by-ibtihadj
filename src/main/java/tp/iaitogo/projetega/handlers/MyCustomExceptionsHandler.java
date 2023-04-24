@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import tp.iaitogo.projetega.exceptions.ClientNotFoundException;
 import tp.iaitogo.projetega.exceptions.CompteNotFoundException;
+import tp.iaitogo.projetega.exceptions.DateFormatNotCorrectException;
 import tp.iaitogo.projetega.exceptions.SoldeInsuffissantException;
 
 import java.sql.SQLIntegrityConstraintViolationException;
@@ -46,6 +47,13 @@ public class MyCustomExceptionsHandler {
         LOGGER.error(exception.getMessage());
         return ResponseEntity.status(500).body("Impossible de supprimer ce client car il possède un compte");
     }
+
+    @ExceptionHandler(DateFormatNotCorrectException.class)
+    public ResponseEntity<String> DateFormatNotCorrectException(DateFormatNotCorrectException exception) {
+        LOGGER.error(exception.getMessage());
+        return ResponseEntity.status(BAD_REQUEST).body(exception.getMessage());
+    }
+
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<?> ConstraintViolationException(ConstraintViolationException exception) {
         LOGGER.error(exception.getMessage());

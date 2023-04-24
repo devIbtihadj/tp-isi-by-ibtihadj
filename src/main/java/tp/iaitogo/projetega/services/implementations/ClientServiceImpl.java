@@ -8,9 +8,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import tp.iaitogo.projetega.entities.Client;
 import tp.iaitogo.projetega.exceptions.ClientNotFoundException;
+import tp.iaitogo.projetega.exceptions.DateFormatNotCorrectException;
 import tp.iaitogo.projetega.repositories.ClientRepository;
 import tp.iaitogo.projetega.services.ClientService;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Optional;
 
@@ -27,6 +29,10 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public Client creerClient(Client client) {
+        LocalDate today = LocalDate.now();
+        if(client.getDateNaissance().isAfter(today)){
+            throw new DateFormatNotCorrectException("La date de naissance doit être inférieur à la date du jour");
+        }
         return clientRepository.save(client);
     }
 
@@ -44,7 +50,6 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public void supprimerClient(Long id) {
         Optional<Client> optionalClient = clientRepository.findById(id);
-        System.out.println(optionalClient.get().getId());
         if(optionalClient.isEmpty()){
             throw new ClientNotFoundException("Aucun client n'existe avec l'id "+id);
         }else {
