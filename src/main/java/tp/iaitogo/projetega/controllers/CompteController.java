@@ -77,6 +77,6 @@ public class CompteController extends MyCustomExceptionsHandler {
     @GetMapping(value = ENTITY_PATH+"/virement", produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<?> virement(@RequestBody VirementRequest virementRequest) {
         compteService.virement(virementRequest.getNumCompteDonneur(), virementRequest.getNumCompteReceveur(), virementRequest.getMontant());
-        return ResponseEntity.status(OK).body("Virement effectuer avec succès");
+        return ResponseEntity.status(OK).body("Virement effectué avec succès");
     }
 }

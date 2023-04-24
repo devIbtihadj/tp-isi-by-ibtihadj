@@ -98,7 +98,7 @@ public class CompteServiceImpl implements CompteService {
             throw new CompteNotFoundException("Aucun compte n'existe avec le numéro de compte "+numCompte);
         }else {
             if(optionalCompte.get().getSolde() >= montant){
-                optionalCompte.get().setSolde(optionalCompte.get().getSolde() + montant);
+                optionalCompte.get().setSolde(optionalCompte.get().getSolde() - montant);
                 return compteRepository.save(optionalCompte.get());
             }else {
                 throw new SoldeInsuffissantException("Solde insuffisant sur ce compte pour effectuer l'opération");
